@@ -1,55 +1,75 @@
-//energia, vida, ataque, defesa e nome. Quem sabe um método de treinar ataque
-import prompt from "prompt-sync";
-
-
-//classe
-class Personagem {
+export default class Personagem {
     constructor(
         public nome: string,
         public energia: number,
         public vida: number,
         public ataque: number,
         public defesa: number
-    ) {
-        this.nome = nome;
-        this.energia = 50;
-        this.vida = 100;
+    ) {}
+
+    // toda vez que quiser ler dados na classe - usar parametro
+    // toda vez que quiser imprimir dados na clase - usar retornoi
+    showStatus(): string{
+       return("Nome: " + this.nome +
+        "Ataque: " + this.ataque +
+        "Defesa: " + this.defesa +
+        "Vida: " + this.vida +
+        "Energia: " + this.energia
+    )};
+    trainAttack():void{
+        this.ataque += Math.floor(Math.random() * 3);
+        this.energia -= Math.floor(Math.random() * 10);
+        if(this.energia <= 0){
+            console.log("Ops, você morreu!");
+        }else if (this.ataque >= 100){
+            console.log("Seu ataque está no máximo");
+            this.ataque = 100;
+        }
+    }
+
+    trainDeffence():void{
+        this.defesa += Math.floor(Math.random()) * 3;
+        this.energia -= Math.floor(Math.random() * 10);
+        this.isAlive();
+        if (this.defesa >= 100){
+            console.log("Seu ataque está no máximo");
+            this.defesa = 100;
+        }
+    }
+
+    rest(horas:number):number{
+        if(horas >= 2 ){
+            this.energia += 10;
+        }else if(horas >= 10 ){
+            this.energia += 25;
+        }else if( horas >= 20 ){
+            this.energia += 50;
+        }
+        return this.energia;
+    }
+
+    battle(): number{
+        let lifeLost = Math.floor(Math.random() * 100); 
+        this.vida -= Math.floor(Math.random() * 100);
+        return lifeLost;
+    }
+
+    isAlive():boolean{
+        if(this.energia <= 0 || this.vida <= 0){
+            console.log("Ops, você morreu!");
+            return false;
+        }else{
+            return true;
+        }
+    }
+    
+    isMaxed():void{
+        if(this.ataque || this.defesa >= 100){
+            console.log("Status maximizado");
+        }
     }
 }
 
 
-let daenerys: Personagem;
-daenerys = new Personagem("Daenerys Targaryen", 100,50,20,20);
-
-let jon: Personagem = new Personagem("Jon Snow",100,50,50,30);
-
-let teclado = prompt();
-
-let option:number = 0;
-while(option != 9){
-    console.log("|---------------------------------------|")
-    console.log("|----------- Personagem ----------------|");
-    console.log("|-----------1. Treinar ataque ----------|");
-    console.log("|---------- 2. Treinar defesa ----------|");
-    console.log("|---------- 3. Imprimir status ---------|");
-    console.log("|------------9. Sair -------------------|");
-    console.log("|---------------------------------------|");
-}
-
-option = +teclado("Escolha uma ação");
-
-switch(option){
-    case 1:
-        daenerys.ataque += 2;
-    break;
-    case 2:
-        daenerys.defesa += 2;
-    case 3:
-        console.log(daenerys);
-    break;
-    
-
-
-}
 
 
